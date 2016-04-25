@@ -4,6 +4,7 @@ namespace Acme\RentacarBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Acme\RentacarBundle\Entity\Reservation
@@ -26,13 +27,17 @@ class Reservation
      * @var datetime $departureAt
      *
      * @ORM\Column(name="departure_at", type="datetime", nullable=false)
-     */
+	 * @Assert\NotBlank(groups={"reservation_location"})
+	 * @Assert\DateTime(groups={"reservation_location"})
+	 */
     private $departureAt;
 
     /**
      * @var datetime $returnAt
      *
      * @ORM\Column(name="return_at", type="datetime", nullable=false)
+	 * @Assert\NotBlank(groups={"reservation_location"})
+	 * @Assert\DateTime(groups={"reservation_location"})
      */
     private $returnAt;
 
@@ -114,6 +119,7 @@ class Reservation
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="departure_location_id", referencedColumnName="id")
      * })
+	 * @Assert\NotBlank(groups={"reservation_location"})
      */
     private $departureLocation;
 
@@ -124,10 +130,20 @@ class Reservation
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="return_location_id", referencedColumnName="id")
      * })
+	 * @Assert\NotBlank(groups={"reservation_location"})
      */
     private $returnLocation;
 
-
+	/**
+	 * Constructor.
+	 */
+	public function __construct()
+	{
+		$this->departureAt = new \DateTime();
+		$this->departureAt->setTime(0, 0);
+		$this->returnAt = new \DateTime('+1 day');
+		$this->returnAt->setTime(0, 0);
+	}
 
     /**
      * Get id
