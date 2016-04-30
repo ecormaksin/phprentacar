@@ -7,28 +7,7 @@
 
 <div class="row">
 	<div class="span6">
-		<table class="amount-table table table-bordered">
-			<thead>
-				<tr>
-					<th>品目</th>
-					<th class="amount-col">小計</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>Aクラス</td>
-					<td class="amount-col">&yen; {{ 7000|number_format }}</td>
-				</tr>
-				<tr>
-					<td>オプション</td>
-					<td class="amount-col">&yen; {{ 1000|number_format }}</td>
-				</tr>
-				<tr class="total-amount-row">
-					<td>合計金額</td>
-					<td class="amount-col">&yen; {{ 8000|number_format }}</td>
-				</tr>
-			</tbody>
-		</table>
+		{% include "AcmeRentacarBundle:Reservation:_amount_table.html.twig" %}
 	</div>
 </div>
 
@@ -40,15 +19,15 @@
 	<div class="control-group">
 		<label class="control-label">出発</label>
 		<div class="controls">
-			2012/04/01 10:00
-			神楽坂営業所
+			{{ reservation.departureAt|date('Y/m/d H:i') }}
+			{{ reservation.departureLocation }}営業所
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label">返却</label>
 		<div class="controls">
-			2012/04/01 10:00
-			神楽坂営業所
+			{{ reservation.returnAt|date('Y/m/d H:i') }}
+			{{ reservation.returnLocation }}営業所
 		</div>
 	</div>
 	<div>
@@ -59,6 +38,7 @@
 
 <fieldset>
 	<legend>車種</legend>
+	{% include "AcmeRentacarBundle::_car.html.twig" with {'carClass': reservation.carClass} %}
 	<div>
 		<a href="{{ path('reservation_car') }}" class="btn">車種を変更する</a>
 	</div>
@@ -70,12 +50,13 @@
 	<div class="control-group">
 		<label class="control-label">免責補償</label>
 		<div class="controls">
-			あり
+			{% if reservation.useInsurance %}あり{% else %}なし{% endif %}
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label">備考</label>
 		<div class="controls">
+			{{ reservation.note }}
 		</div>
 	</div>
 	<div>
@@ -86,7 +67,7 @@
 
 <form action="{{ path('reservation_confirm') }}" method="post">
 	<div class="form-actions">
-		<input type="submit" class="btn btn-primary btn-large" value="予約を確認する">
+		<input type="submit" class="btn btn-primary btn-large" value="予約を確定する">
 	</div>
 </form>
 {% endblock %}

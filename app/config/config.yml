@@ -55,10 +55,10 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: %mailer_transport%
-    host:      %mailer_host%
-    username:  %mailer_user%
-    password:  %mailer_password%
+    transport: smtp
+    host:      mail.asahi-net.or.jp
+    username:  gf7m-od
+    password:  smile1103
 
 jms_security_extra:
     secure_controllers:  true
