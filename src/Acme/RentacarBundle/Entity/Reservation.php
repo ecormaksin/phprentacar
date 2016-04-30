@@ -4,12 +4,13 @@ namespace Acme\RentacarBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Acme\RentacarBundle\Entity\Reservation
  *
  * @ORM\Table(name="reservation")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Acme\RentacarBundle\Entity\ReservationRepository")
  */
 class Reservation
 {
@@ -26,13 +27,17 @@ class Reservation
      * @var datetime $departureAt
      *
      * @ORM\Column(name="departure_at", type="datetime", nullable=false)
-     */
+	 * @Assert\NotBlank(groups={"reservation_location"})
+	 * @Assert\DateTime(groups={"reservation_location"})
+	 */
     private $departureAt;
 
     /**
      * @var datetime $returnAt
      *
      * @ORM\Column(name="return_at", type="datetime", nullable=false)
+	 * @Assert\NotBlank(groups={"reservation_location"})
+	 * @Assert\DateTime(groups={"reservation_location"})
      */
     private $returnAt;
 
@@ -104,7 +109,8 @@ class Reservation
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="car_class_id", referencedColumnName="id")
      * })
-     */
+	 * @Assert\NotBlank(groups={"reservation_car"})
+	 */
     private $carClass;
 
     /**
@@ -114,6 +120,7 @@ class Reservation
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="departure_location_id", referencedColumnName="id")
      * })
+	 * @Assert\NotBlank(groups={"reservation_location"})
      */
     private $departureLocation;
 
@@ -124,10 +131,20 @@ class Reservation
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="return_location_id", referencedColumnName="id")
      * })
+	 * @Assert\NotBlank(groups={"reservation_location"})
      */
     private $returnLocation;
 
-
+	/**
+	 * Constructor.
+	 */
+	public function __construct()
+	{
+		$this->departureAt = new \DateTime();
+		$this->departureAt->setTime(0, 0);
+		$this->returnAt = new \DateTime('+1 day');
+		$this->returnAt->setTime(0, 0);
+	}
 
     /**
      * Get id
@@ -398,4 +415,41 @@ class Reservation
     {
         return $this->returnLocation;
     }
+
+	/**
+	 * Calculate amount.
+	 */
+	public function calculateAmount()
+	{
+		$diff = $this->returnAt->diff($this->departureAt);
+
+		$hours = ($diff->days * 24) + $diff->h + ($diff->i ? 1 : 0);
+		$days = floor($hours / 24);
+		$hours = $hours % 24;
+
+		// car subtotal
+		$carSubtotal = 0;
+		if ($days > 0) {
+			$carSubtotal += ($days * $this->carClass->getPrice24());
+		}
+		if ($hours > 12) {
+			$carSubtotal += $this->carClass->getPrice24();
+		} elseif ($hours > 6) {
+			$carSubtotal += $this->carClass->getPrice12();
+		} elseif ($hours > 3) {
+			$carSubtotal += $this->carClass->getPrice6();
+		} elseif ($hours > 0) {
+			$carSubtotal += $this->carClass->getPrice3();
+		}
+
+		// option subtotal
+		$optionSubtotal = 0;
+		if ($this->useInsurance) {
+			$optionSubtotal += ($days + ($hours > 0 ? 1 : 0)) * $this->carClass->getInsurancePrice();
+		}
+
+		$this->carSubtotal = $carSubtotal;
+		$this->optionSubtotal = $optionSubtotal;
+		$this->totalAmount = $carSubtotal + $optionSubtotal;
+	}
 }

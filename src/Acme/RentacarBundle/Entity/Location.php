@@ -125,4 +125,14 @@ class Location
     {
         return $this->updatedAt;
     }
+
+	/**
+	 * __toString().
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return (string)$this->name;
+	}
 }
