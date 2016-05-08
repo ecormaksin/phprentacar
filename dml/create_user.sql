@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `rentacar`.`user` (
 	`email` VARCHAR(100) NOT NULL ,
 	`password` VARCHAR(100) NOT NULL ,
 	`tel` VARCHAR(20) NULL ,
-	`birth` DATE NULL ,
+	`birthday` DATE NULL ,
 	`activation_key` VARCHAR(100) NULL ,
 	`created_at` DATETIME NOT NULL ,
 	`updated_at` DATETIME NOT NULL ,

@@ -57,6 +57,48 @@ class MailService
 		$this->mailer->send($message);
 	}
 
+    /**
+     * Send registration confirm mail.
+     *
+     * @param User $user
+     */
+    public function sendRegistrationConfirmMail(User $user)
+    {
+        $body = $this->render('AcmeRentacarBundle:Mail:registrationConfirm.txt.twig', array(
+            'user' => $user,
+        ));
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('仮登録が完了しました')
+            ->setFrom(array('gf7m-od@asahi-net.or.jp' => 'PHPレンタカー'))
+            ->setTo($user->getEmail())
+            ->setBody($body)
+        ;
+
+        $this->mailer->send($message);
+    }
+
+    /**
+     * Send duplicated registration mail.
+     *
+     * @param User $user
+     */
+    public function sendDuplicatedRegistrationMail(User $user)
+    {
+        $body = $this->render('AcmeRentacarBundle:Mail:duplicatedRegistration.txt.twig', array(
+            'user' => $user,
+        ));
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('既に登録されたメールアドレスです')
+            ->setFrom(array('gf7m-od@asahi-net.or.jp' => 'PHPレンタカー'))
+            ->setTo($user->getEmail())
+            ->setBody($body)
+        ;
+
+        $this->mailer->send($message);
+    }
+
 	/**
 	 * Render twig template.
 	 *

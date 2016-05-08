@@ -4,6 +4,7 @@ namespace Acme\RentacarBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Acme\RentacarBundle\Entity\User
@@ -13,6 +14,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class User
 {
+
+    const PASSWORD_SALT = '73d0afbae07cf752531af6162fb7c367';
+
     /**
      * @var integer $id
      *
@@ -26,6 +30,8 @@ class User
      * @var string $name
      *
      * @ORM\Column(name="name", type="string", length=100, nullable=false)
+     * @Assert\NotBlank
+     * @Assert\MaxLength(limit=100)
      */
     private $name;
 
@@ -33,6 +39,8 @@ class User
      * @var string $email
      *
      * @ORM\Column(name="email", type="string", length=100, nullable=false)
+     * @Assert\NotBlank
+     * @Assert\Email
      */
     private $email;
 
@@ -47,15 +55,19 @@ class User
      * @var string $tel
      *
      * @ORM\Column(name="tel", type="string", length=20, nullable=true)
+     * @Assert\NotBlank
+     * @Assert\Regex(pattern="/^\d+(-\d+)*$/")
      */
     private $tel;
 
     /**
-     * @var date $birth
+     * @var date $birthday
      *
-     * @ORM\Column(name="birth", type="date", nullable=true)
+     * @ORM\Column(name="birthday", type="date", nullable=true)
+     * @Assert\NotBlank
+     * @Assert\Date
      */
-    private $birth;
+    private $birthday;
 
     /**
      * @var string $activationKey
@@ -80,6 +92,12 @@ class User
      */
     private $updatedAt;
 
+    /**
+     * @var string
+     * @Assert\NotBlank
+     * @Assert\MinLength(limit=8)
+     */
+    private $rawPassword;
 
 
     /**
@@ -173,23 +191,23 @@ class User
     }
 
     /**
-     * Set birth
+     * Set birthday
      *
-     * @param date $birth
+     * @param date $birthday
      */
-    public function setBirth($birth)
+    public function setBirthday($birthday)
     {
-        $this->birth = $birth;
+        $this->birthday = $birthday;
     }
 
     /**
-     * Get birth
+     * Get birthday
      *
      * @return date 
      */
-    public function getBirth()
+    public function getBirthday()
     {
-        return $this->birth;
+        return $this->birthday;
     }
 
     /**
@@ -250,5 +268,52 @@ class User
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Set raw password.
+     *
+     * @param string $rawPassword
+     */
+    public function setRawPassword($rawPassword)
+    {
+        $this->rawPassword = $rawPassword;
+        $this->password = self::hashPassword($rawPassword);
+    }
+
+    /**
+     * Get raw password.
+     *
+     * @return string
+     */
+    public function getRawPassword()
+    {
+        return $this->rawPassword;
+    }
+
+    /**
+     * Is given password valid?
+     *
+     * @param string $rawPassword
+     * @return boolean
+     */
+    public function isValidPassword($rawPassword)
+    {
+        if ($this->password === self::hashPassword($rawPassword)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Hash password.
+     *
+     * @param string $rawPassword
+     * @return string
+     */
+    protected static function hashPassword($rawPassword)
+    {
+        return sha1($rawPassword . self::PASSWORD_SALT);
     }
 }
