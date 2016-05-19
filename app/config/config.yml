@@ -1,6 +1,6 @@
 imports:
     - { resource: parameters.ini }
-    - { resource: security.yml }
+#    - { resource: security.yml }
 
 framework:
     #esi:             ~
@@ -60,9 +60,9 @@ swiftmailer:
     username:  gf7m-od
     password:  smile1103
 
-jms_security_extra:
-    secure_controllers:  true
-    secure_all_services: false
+#jms_security_extra:
+#    secure_controllers:  true
+#    secure_all_services: false
 
 stof_doctrine_extensions:
     orm:

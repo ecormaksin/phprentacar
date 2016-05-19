@@ -307,6 +307,20 @@ class User
     }
 
     /**
+     * Is this user enabled?
+     *
+     * @return boolean
+     */
+    public function isEnabled()
+    {
+        if (null === $this->activationKey) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Hash password.
      *
      * @param string $rawPassword

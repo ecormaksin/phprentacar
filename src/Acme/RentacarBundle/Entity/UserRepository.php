@@ -55,6 +55,26 @@ class UserRepository extends EntityRepository
     }
 
     /**
+     * Authenticated user by email and password.
+     *
+     * @param string $email
+     * @param string $password
+     * @return User
+     */
+    public function authenticateUser($email, $password)
+    {
+        $user = $this->findOneBy(array(
+            'email' => $email,
+        ));
+
+        if ($user && $user->isValidPassword($password) && $user->isEnabled()) {
+            return $user;
+        }
+
+        return;
+    }
+
+    /**
      * Issue activation key.
      *
      * @return string
