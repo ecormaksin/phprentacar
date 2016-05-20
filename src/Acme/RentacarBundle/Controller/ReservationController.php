@@ -2,6 +2,7 @@
 
 namespace Acme\RentacarBundle\Controller;
 
+use Crocos\SecurityBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -92,6 +93,7 @@ class ReservationController extends AppController
 	/**
 	 * @Route("/option", name="reservation_option")
 	 * @Template
+     * @Secure
 	 */
 	public function optionAction(Request $request)
 	{
@@ -125,6 +127,7 @@ class ReservationController extends AppController
 	/**
 	 * @Route("/confirm", name="reservation_confirm")
 	 * @Template
+     * @Secure
 	 */
 	public function confirmAction(Request $request)
 	{
@@ -137,10 +140,8 @@ class ReservationController extends AppController
 		$reservation->calculateAmount();
 
         if ('POST' === $request->getMethod()) {
-            $user = $this->get('doctrine')->getRepository('AcmeRentacarBundle:User')->find(1);
-
             $service = $this->get('rentacar.reservation_service');
-            $service->saveReservation($reservation, $user);
+            $service->saveReservation($reservation, $this->getUser());
 
             $session = $request->getSession();
             $session->remove('reservation/location');
@@ -158,6 +159,7 @@ class ReservationController extends AppController
 	/**
 	 * @Route("/finish", name="reservation_finish")
 	 * @Template
+     * @Secure
 	 */
 	public function finishAction(Request $request)
 	{

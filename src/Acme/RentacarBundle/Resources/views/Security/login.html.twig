@@ -10,6 +10,13 @@
     </div>
 {% endif %}
 
+{% if app.request.session.has('reservation/location') %}
+    <div class="alert alert-warn">
+        予約を行うには会員登録が必要です。<br>
+        既に会員の方はログインしてください。
+    </div>
+{% endif %}
+
 <div class="row">
     <div class="span6">
         <form action="{{ path('login') }}" method="post" class="form-horizontal">

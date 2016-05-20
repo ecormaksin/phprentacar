@@ -6,6 +6,8 @@ use Crocos\SecurityBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Acme\RentacarBundle\Form\LoginProxy;
+use Acme\RentacarBundle\Form\LoginType;
 
 /**
  * SecurityController.
