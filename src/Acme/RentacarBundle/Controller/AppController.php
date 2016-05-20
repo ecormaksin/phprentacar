@@ -2,13 +2,24 @@
 
 namespace Acme\RentacarBundle\Controller;
 
+use Crocos\SecurityBundle\Annotation\Secure;
+use Crocos\SecurityBundle\Annotation\SecureConfig;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
- * AppController.
+ * @SecureConfig(forward="AcmeRentacarBundle:Security:login", auth="session.entity")
  *
  * @author Your name <you@example.com>
  */
-abstract class AppController extends Controller
+class AppController extends Controller
 {
+    public function getSecurity()
+    {
+        return $this->get('crocos_security.context');
+    }
+
+    public function getUser()
+    {
+        return $this->getSecurity()->getUser();
+    }
 }

@@ -19,3 +19,6 @@
 [submodule "vendor/bundles/Doctrine/Bundle/FixturesBundleDoctrine"]
 	path = vendor/bundles/Doctrine/Bundle/FixturesBundleDoctrine
 	url = https://github.com/doctrine/DoctrineFixturesBundle.git
+[submodule "vendor/bundles/Crocos/SecurityBundle"]
+	path = vendor/bundles/Crocos/SecurityBundle
+	url = https://github.com/crocos/CrocosSecurityBundle.git
