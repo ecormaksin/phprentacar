@@ -34,8 +34,11 @@
 								<a href="{{ path('homepage') }}">ホーム</a>
 							</li>
 							<li class="{% if menu == 'reservation' %}active{% endif %}">
-								<a href="{{ path('reservation_new') }}"></a>
+								<a href="{{ path('reservation_new') }}">予約/空車確認</a>
 							</li>
+                            <li class="{% if menu == 'car_class' %}active{% endif %}">
+                                <a href="{{ path('car_class') }}">車種一覧</a>
+                            </li>
 						</ul>
                         {% if _security.isAuthenticated %}
                             <ul class="nav pull-right">
