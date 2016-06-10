@@ -167,6 +167,23 @@ class ReservationController extends AppController
 	}
 
 	/**
+     * @Route("/history", name="reservation_history")
+     * @Template
+     * @Secure
+     */
+    public function historyAction(Request $request)
+    {
+        $reservationRepository = $this->get('doctrine')->getRepository('AcmeRentacarBundle:Reservation');
+        $reservations = $reservationRepository->findBy(array(
+            'user' => $this->getUser()->getId(),
+        ), array('id' => 'DESC'));
+
+        return array(
+            'reservations' => $reservations,
+        );
+    }
+
+    /**
 	 * Restore reservation data.
 	 *
 	 * @param Reservation $reservation

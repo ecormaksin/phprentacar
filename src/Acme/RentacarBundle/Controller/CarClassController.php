@@ -19,7 +19,7 @@ class CarClassController extends AppController
      * @Route("/", name="car_class")
      * @Template
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $carClassRepository = $this->get('doctrine')->getRepository('AcmeRentacarBundle:CarClass');
         $carClasses = $carClassRepository->findAll();

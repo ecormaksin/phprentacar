@@ -1,9 +1,3 @@
-{% extends "AcmeRentacarBundle::base.html.twig" %}
-
-{% block page_title '予約/オプション選択' %}
-{% set menu = 'reservation' %}
-
-{% block content %}
 {% include "AcmeRentacarBundle::_car.html.twig" with {'carClass':reservation.carClass} %}
 
 <form action="{{ path('reservation_option') }}" method="post">
@@ -28,4 +22,3 @@
 		</div>
 	</fieldset>
 </form>
-{% endblock %}
