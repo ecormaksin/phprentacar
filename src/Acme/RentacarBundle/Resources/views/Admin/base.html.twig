@@ -31,6 +31,9 @@
                     <li {% if menu == 'home' %}class="active"{% endif %}>
                         <a href="{{ path('admin_home') }}">ホーム</a>
                     </li>
+                    <li {% if menu == 'user' %}class="active"{% endif %}>
+                        <a href="{{ path('admin_user') }}">ユーザー一覧</a>
+                    </li>
                 </ul>
             </div>
         </div>

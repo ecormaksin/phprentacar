@@ -1,6 +1,9 @@
 imports:
     - { resource: parameters.ini }
 
+parameters:
+    knp_paaaginator.template.pagination: AcmeRentacarBundle::pagination.html.twig
+
 framework:
     #esi:             ~
     translator:      { fallback: %locale% }
