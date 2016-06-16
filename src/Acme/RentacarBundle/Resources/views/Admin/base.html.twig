@@ -32,7 +32,10 @@
                         <a href="{{ path('admin_home') }}">ホーム</a>
                     </li>
                     <li {% if menu == 'user' %}class="active"{% endif %}>
-                        <a href="{{ path('admin_user') }}">ユーザー一覧</a>
+                        <a href="{{ path('admin_user') }}">ユーザ一覧</a>
+                    </li>
+                    <li {% if menu == 'reservation' %}class="active"{% endif %}>
+                        <a href="{{ path('admin_reservation') }}">予約一覧</a>
                     </li>
                 </ul>
             </div>
