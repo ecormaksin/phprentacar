@@ -12,4 +12,26 @@ use Doctrine\ORM\EntityRepository;
  */
 class ReservationRepository extends EntityRepository
 {
+    /**
+     * Find reservations depart between given dates.
+     *
+     * @param \DateTime $departFrom
+     * @param \DateTime $departTo
+     * @return Collection
+     */
+    public function findReservationsDepartBetween(\DateTime $departFrom, \DateTime $departTo)
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->where('r.departureAt BETWEEN :departFrom AND :departTo')
+            ->setParameters(array(
+                'departFrom' => $departFrom,
+                'departTo' => $departTo,
+            ))
+            ->orderBy('r.departureAt')
+        ;
+
+        $reservations = $qb->getQuery()->getResult();
+
+        return $reservations;
+    }
 }

@@ -99,6 +99,30 @@ class MailService
         $this->mailer->send($message);
     }
 
+    /**
+     * Send reservations mail for admin.
+     *
+     * @param \DateTime $today
+     * @param Collection $reservations
+     * @param string $email
+     */
+    public function sendReservationsTodayMailForAdmin(\DateTime $today, $reservations, $email)
+    {
+        $body = $this->render('AcmeRentacarBundle:Mail/Admin:reservationsToday.txt.twig', array(
+            'today' => $today,
+            'reservations' => $reservations,
+        ));
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject(sprintf('%sの予約一覧', $today->format('Y/m/d')))
+            ->setFrom(array('gf7m-od@asahi-net.or.jp' => 'PHPレンタカー'))
+            ->setTo($email)
+            ->setBody($body)
+        ;
+
+        $this->mailer->send($message);
+    }
+
 	/**
 	 * Render twig template.
 	 *

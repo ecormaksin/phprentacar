@@ -17,3 +17,5 @@
     locale            = en
 
     secret            = ThisTokenIsNotSoSecretChangeIt
+
+    admin_email       = truth_jp_4133@yahoo.co.jp
