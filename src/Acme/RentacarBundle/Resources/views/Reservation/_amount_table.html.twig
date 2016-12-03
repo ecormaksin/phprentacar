@@ -6,11 +6,11 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr>
+		<tr class="car-subtotal-row">
 			<td>{{ reservation.carClass }}クラス</td>
 			<td class="amount-col">&yen; {{ reservation.carSubtotal|number_format }}</td>
 		</tr>
-		<tr>
+		<tr class="option-subtotal-row">
 			<td>オプション</td>
 			<td class="amount-col">&yen; {{ reservation.optionSubtotal|number_format }}</td>
 		</tr>
